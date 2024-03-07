@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { fetchWeatherApi } from 'openmeteo';
 import WaveModel from '../Models/Model';
+import WeatherCart from './WeatherCart/WeatherCart';
 
 
 const API_BASE_URL = 'https://api.open-meteo.com/v1/forecast';
@@ -13,12 +14,12 @@ const App: React.FC = () => {
   const [longitude, setLongitude] = useState<string>('');
   const [weatherData, setWeatherData] = useState<WaveModel>(new WaveModel() );
   const [indicator, setIndicator] = useState<boolean>(false);
+  const [showChart, setShowChart] = useState<boolean>(false);
 
   const fetchData = async () => {
 
        try {
       const response = await axios.get(`https://marine-api.open-meteo.com/v1/marine?latitude=${latitude}&longitude=${longitude}&hourly=wave_height&start_date=${startDate}&end_date=${endDate}`)
-      //setWeatherData(response.data);
       setWeatherData({
         hourly: response.data.hourly
     });
@@ -26,6 +27,11 @@ const App: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
+
+  const chart = () => {
+    setShowChart(true);
+  };
+
 
   const renderIndicators = () => {
     setIndicator(true)
@@ -45,8 +51,11 @@ const App: React.FC = () => {
         <input type="string" value={latitude} placeholder="Latitude" onChange={(e) => setLatitude(e.target.value)} />
         <input type="string" value={longitude} placeholder="Longitude" onChange={(e) => setLongitude(e.target.value)} />
       </div>
-      <button onClick={fetchData}>Fetch Data</button>
+      <button onClick={fetchData}>Fetch Data</button><br/>
+      (first fitch data)
       <button onClick={renderIndicators}>Indicators Data</button>
+      <button onClick={chart}>Show Chart</button>
+
     
       {weatherData && (
         <>
@@ -81,6 +90,7 @@ const App: React.FC = () => {
         </div>
       )}
 
+{showChart && weatherData &&  <WeatherCart data={weatherData} />}
 
     </div>
   );
