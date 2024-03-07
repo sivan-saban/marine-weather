@@ -32,7 +32,6 @@ const App: React.FC = () => {
     setShowChart(true);
   };
 
-
   const renderIndicators = () => {
     setIndicator(true)
   };
@@ -83,9 +82,10 @@ const App: React.FC = () => {
         <div>
           <h2>Indicators Data</h2>
           {weatherData.hourly.wave_height.map((wave: number, index: number) => (
-            <span key={index} style={{ color: wave <= 0.60 ? 'green' : wave <= 0.120 ? 'yellow' : 'red' }}>
-              {wave}
+            <span key={index} style={{ color: wave <= 0.60 ? 'green' : wave <= 1.2 ? 'yellow' : 'red' }}>
+              {wave}, 
             </span>
+           
           ))}
         </div>
       )}
